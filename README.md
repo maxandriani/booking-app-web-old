@@ -1,46 +1,53 @@
-# Getting Started with Create React App
+# booking-app-server
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Small booking manager app to handler booking operation on renting beach houses.
 
-## Available Scripts
+I've developed this app to handle my rental houses small family business. It is not intended to be an enterprise level application. In fact it has three basic features:
+* Place managment;
+* Booking Calendar;
+* Payments control;
 
-In the project directory, you can run:
+## Architecture
 
-### `npm start`
+This application is a core server to manage all resources and operations. There will be other client applications to consume this server by REST. In the future, I want this application will manage the booking calendars on multiple channels like Airbnb, Vrbo and others.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### Database
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+This is a small and simple application and I don't want to hype things write now. So choosed a Postgres SQL database to store application data. You can see the relational diagram in the following:
 
-### `npm test`
+![image](./docs/diagrams/BookingEr.jpg)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+* It was a design choise to DO NOT USE COMPOSITE KEYs to improve performance and prevent ORM compatibilities issues. In fact, composite keys behaviour will be simulated w/ unique indicies.
 
-### `npm run build`
+### Technologies
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+To this small server app I choosed .net 6 web application as the core language because it is fast, reliable, typed and cross platform.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Database managment will be handled by Entity Framework.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Security and User control will be handled by Identity Framework.
 
-### `npm run eject`
+The comunication between server and client will rely over ssl and oAuth Authorization tokens.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### Structure
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+I want to Kepp it Simple!, so I choosed Clean Architecture as application layer structure and namespaces as domain segregation.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+```
+BookingApp.Domain
+  - Bookings
+  - Payments
+  - Places
+BookingApp.Services
+  - Bookings
+  - Payments
+  - Places
+BookingApp.Infra
+  - Relational
+  - Mappers
+  - Configration
+BookingApp.Server
+  - Bookings
+  - Payments
+  - Places
+```
